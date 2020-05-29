@@ -25,6 +25,12 @@ add_library(video_core STATIC
     engines/shader_bytecode.h
     engines/shader_header.h
     engines/shader_type.h
+    macro/macro.cpp
+    macro/macro.h
+    macro/macro_interpreter.cpp
+    macro/macro_interpreter.h
+    macro/macro_jit_x64.cpp
+    macro/macro_jit_x64.h
     fence_manager.h
     gpu.cpp
     gpu.h
@@ -36,8 +42,6 @@ add_library(video_core STATIC
     gpu_thread.h
     guest_driver.cpp
     guest_driver.h
-    macro_interpreter.cpp
-    macro_interpreter.h
     memory_manager.cpp
     memory_manager.h
     morton.cpp
@@ -229,7 +233,7 @@ endif()
 create_target_directory_groups(video_core)
 
 target_link_libraries(video_core PUBLIC common core)
-target_link_libraries(video_core PRIVATE glad)
+target_link_libraries(video_core PRIVATE glad xbyak)
 
 if (ENABLE_VULKAN)
     target_include_directories(video_core PRIVATE sirit ../../externals/Vulkan-Headers/include)
