@@ -106,7 +106,11 @@ void Maxwell3D::InitializeRegisterDefaults() {
     regs.rasterize_enable = 1;
     regs.rt_separate_frag_data = 1;
     regs.framebuffer_srgb = 1;
+    regs.line_width_aliased = 1.0f;
+    regs.line_width_smooth = 1.0f;
     regs.front_face = Maxwell3D::Regs::FrontFace::ClockWise;
+    regs.polygon_mode_back = Maxwell3D::Regs::PolygonMode::Fill;
+    regs.polygon_mode_front = Maxwell3D::Regs::PolygonMode::Fill;
 
     shadow_state = regs;
 
@@ -457,8 +461,9 @@ void Maxwell3D::StampQueryResult(u64 payload, bool long_query) {
 
 void Maxwell3D::ProcessQueryGet() {
     // TODO(Subv): Support the other query units.
-    ASSERT_MSG(regs.query.query_get.unit == Regs::QueryUnit::Crop,
-               "Units other than CROP are unimplemented");
+    if (regs.query.query_get.unit != Regs::QueryUnit::Crop) {
+        LOG_DEBUG(HW_GPU, "Units other than CROP are unimplemented");
+    }
 
     switch (regs.query.query_get.operation) {
     case Regs::QueryOperation::Release:
@@ -534,8 +539,8 @@ void Maxwell3D::ProcessCounterReset() {
         rasterizer.ResetCounter(QueryType::SamplesPassed);
         break;
     default:
-        LOG_WARNING(Render_OpenGL, "Unimplemented counter reset={}",
-                    static_cast<int>(regs.counter_reset));
+        LOG_DEBUG(Render_OpenGL, "Unimplemented counter reset={}",
+                  static_cast<int>(regs.counter_reset));
         break;
     }
 }
@@ -592,8 +597,8 @@ std::optional<u64> Maxwell3D::GetQueryResult() {
                          system.GPU().GetTicks());
         return {};
     default:
-        UNIMPLEMENTED_MSG("Unimplemented query select type {}",
-                          static_cast<u32>(regs.query.query_get.select.Value()));
+        LOG_DEBUG(HW_GPU, "Unimplemented query select type {}",
+                  static_cast<u32>(regs.query.query_get.select.Value()));
         return 1;
     }
 }
