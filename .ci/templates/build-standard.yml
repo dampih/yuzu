@@ -1,5 +1,5 @@
 parameters:
-  version: '1.0.1'
+  version: ''
 
 jobs:
 - job: build
@@ -12,9 +12,6 @@ jobs:
       windows:
         BuildSuffix: 'windows-mingw'
         ScriptFolder: 'windows'
-      linux:
-        BuildSuffix: 'linux'
-        ScriptFolder: 'linux'
   steps:
   - template: ./sync-source.yml
     parameters:
