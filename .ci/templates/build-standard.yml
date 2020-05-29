@@ -1,5 +1,5 @@
 parameters:
-  version: ''
+  version: '1.0.1'
 
 jobs:
 - job: build
