@@ -1,2 +1,2 @@
-git config --global user.email "yuzu@yuzu-emu.org"
-git config --global user.name "yuzubot"
+git config --global user.email "ahmdsofwan89@gmail.com"
+git config --global user.name "dampih"
